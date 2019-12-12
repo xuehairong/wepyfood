@@ -1,0 +1,187 @@
+<style lang="less">
+  page{
+    height: 100%;
+  }
+  .container{
+    background-color: #F8F8F8;
+    height: 100%;
+    padding: 100rpx 50rpx;
+    position: relative;
+    overflow: hidden;
+
+    form{
+        z-index:100;
+        .title{
+            font-weight: 700;
+            font-size: 60rpx;
+            margin-bottom: 40rpx;
+        }
+        input{
+            background-color:#fff;
+            border-radius: 40rpx;
+            padding: 20rpx;
+            width: 100%;
+             box-shadow: 2px 3px 4px rgba(0,0,0,.1);
+        }
+        input + input{
+            margin-left: 40rpx;
+        }
+        .section{
+          display: flex;
+          position: relative;
+        }
+        .section+.section{
+            margin-top: 40rpx
+        }
+        button{
+            position:absolute;
+            bottom: -35rpx;
+            right: 30rpx;
+            width: 30%;
+        }
+    }
+    .circle{
+      position: absolute;
+      border-radius: 50%;
+      &.top{
+        height: 500rpx;
+        width: 500rpx;
+        background-color: #F2F2F2;
+        top:-300rpx;
+        left:-300rpx;
+      }
+      &.bottom{
+        height: 800rpx;
+        width: 800rpx;
+        background-color: #F2F2F2;
+        bottom:-650rpx;
+        right:-650rpx;
+      }
+      .inner{
+        background:#F8F8F8;
+        top:50%;left:50%;
+        transform:translate(-50%,-50%);
+        &.top{
+          height:300rpx;
+          width:300rpx;
+        }
+        &.bottom{
+          height:600rpx;
+          width:600rpx;
+        }
+      }
+    }
+  }
+</style>
+<template>
+  <view class="container">
+    <view class="circle top" animation="{{topCircleAnimaitonData}}">
+      <view class="circle inner top"></view>
+    </view>
+    <view class="circle bottom" animation="{{bottomCircleAnimaitonData}}">
+      <view class="circle inner bottom"></view>
+    </view>
+    <form bindsubmit="formSubmit">
+        <view class="title">Go Through a couple of steps</view>
+        <view class="section">
+            <input name="name" placeholder="Name">
+            <input name="surname" placeholder="Surname">
+        </view>
+        <view class="section">
+            <input name="number" placeholder="Number">
+        </view>
+        <view class="section">
+            <input name="location" placeholder="Location">
+        </view>
+        <view class="section">
+            <input name="email" placeholder="Email(Not necessary)">
+            <button class="btn_main" formType="submit">IS DONE</button>
+        </view>
+        
+    </form>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+import Toast from 'wepy-com-toast'
+export default class Form extends wepy.page {
+  config = {
+    navigationBarTitleText: 'form'
+  };
+  data={
+      topCircleAnimaitonData: {},
+      bottomCircleAnimaitonData:{}
+    }
+  components = {
+    toast: Toast
+  }
+  onLoad(){
+    wx.setNavigationBarColor({
+      frontColor: '#000000',
+      backgroundColor: '#F8F8F8',
+      animation: {
+        duration: 400,
+        timingFunc: 'easeIn'
+      }
+    })
+    let animationTop = wx.createAnimation({
+      duration: 1000,
+      timingFunction: 'ease'
+    })
+    this.animationTop = animationTop
+    let animationBottom = wx.createAnimation({
+      duration: 1000,
+      timingFunction: 'ease'
+    })
+    this.animationBottom = animationBottom
+  }
+  onReady(){
+    this.animationTop.top('-150rpx').left('-150rpx').step()
+    this.setData({
+      topCircleAnimaitonData: this.animationTop.export()
+    })
+    this.animationBottom.bottom('-350rpx').right('-350rpx').step()
+    this.setData({
+      bottomCircleAnimaitonData: this.animationBottom.export()
+    })
+
+  }
+  methods = {
+    //   done(){
+    //     wx.navigateTo({
+    //       url: '/pages/product' 
+    //     })
+    //   },
+      formSubmit(e) {
+        let name = e.detail.value.name
+        let surname = e.detail.value.surname
+        let number = e.detail.value.number
+        let location = e.detail.value.location
+
+        if (name === "") {
+            // let promise = this.$invoke('toast', 'show', {
+            //     title: 'name is require'
+            // })
+            return false
+        }
+        if (surname === "") {
+            // alert("输入名字");
+            return false
+        }
+        if (number === "") {
+            // alert("输入电话");
+            return false
+
+        }
+        if (location === "") {
+            // alert("输入地址");
+            return false
+        }
+        this.$preload('obj', e.detail.value)
+        wx.navigateTo({
+          url: '/pages/product'
+        })
+      }
+    }
+}
+</script>

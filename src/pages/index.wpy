@@ -1,0 +1,127 @@
+<style lang="less">
+  page{
+    height: 100%;
+  }
+  .container{
+    background-color: #FF983D;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+
+    .circle{
+      position: absolute;
+      border-radius: 50%;
+      &.top{
+        height: 500rpx;
+        width: 500rpx;
+        background-color: #FF841A;
+        top:-300rpx;
+        left:-300rpx;
+      }
+      &.bottom{
+        height: 800rpx;
+        width: 800rpx;
+        background-color: #FF841A;
+        bottom:-650rpx;
+        right:-650rpx;
+      }
+      .inner{
+        background:#FF983D;
+        top:50%;left:50%;
+        transform:translate(-50%,-50%);
+        &.top{
+          height:300rpx;
+          width:300rpx;
+        }
+        &.bottom{
+          height:600rpx;
+          width:600rpx;
+        }
+      }
+    }
+
+    .content{
+      position: absolute;
+      top:50%;
+      transform: translateY(-50%);
+      width: 60%;
+      text-align: center;
+      color: #ffffff;
+      .title{
+        font-size: 42rpx;
+        font-weight: 700;
+      }
+      .info{
+        font-size: 30rpx;
+        line-height: 60rpx;
+      }
+      button{
+        color:#FF841A;
+        font-weight: 700;
+        box-shadow:1px 6px 12px rgba(255, 132, 26, 0.8);
+      }
+      button::after{
+        border:none
+      }
+    }
+  }
+</style>
+<template>
+  <view class="container">
+    <view class="circle top"  animation="{{topCircleAnimaitonData}}">
+      <view class="circle inner top"></view>
+    </view>
+    <view class="circle bottom" animation="{{bottomCircleAnimaitonData}}">
+      <view class="circle inner bottom"></view>
+    </view>
+    <view class="content">
+      <view class="iconfont" style="font-size: 200rpx;">&#xe809;</view>
+      <view class="title">Deliver quickly</view>
+      <view class="info">You can order any breakfast,lunch,snack and dinner from us.And also alot of delicous drinks</view>
+        <button @tap="goNext()" size="mini">  FORWARD!  </button>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class Index extends wepy.page {
+    config = {
+      navigationBarTitleText: 'food'
+    }
+    data={
+      topCircleAnimaitonData: {},
+      bottomCircleAnimaitonData:{}
+    }
+    methods = {
+      goNext(){
+        wx.navigateTo({
+          url: '/pages/form' 
+        })
+      }
+    }
+  onLoad(){
+    let animationTop = wx.createAnimation({
+      duration: 1000,
+      timingFunction: 'ease'
+    })
+    this.animationTop = animationTop
+    let animationBottom = wx.createAnimation({
+      duration: 1000,
+      timingFunction: 'ease'
+    })
+    this.animationBottom = animationBottom
+  }
+  onReady(){
+    this.animationTop.top('-150rpx').left('-150rpx').step()
+    this.setData({
+      topCircleAnimaitonData: this.animationTop.export()
+    })
+    this.animationBottom.bottom('-350rpx').right('-350rpx').step()
+    this.setData({
+      bottomCircleAnimaitonData: this.animationBottom.export()
+    })
+
+  }
+}
+</script>

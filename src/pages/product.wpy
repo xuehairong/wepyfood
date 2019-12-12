@@ -1,0 +1,157 @@
+<style lang="less">
+  page{
+    height: 100%;
+  }
+  .wrapper{
+      position: relative;
+      width:100%;
+      .product{
+          position: relative;
+          margin: 150rpx auto 0 auto;
+            border-radius: 100rpx;
+            box-shadow: 1px 6px 12px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            background: #fff;
+            padding: 150rpx 50rpx 80rpx 50rpx;
+            box-sizing: border-box;
+          .title{
+              font-weight:900;
+              font-size: 60rpx;
+              text-align: center;
+          }
+          .rating{
+              text-align: center;
+              .iconfont{
+                  font-size: 60rpx;
+                  color:#FF983D;
+              }
+              .iconfont+.iconfont{
+                  margin-left: 20rpx;
+              }
+          }
+          .content{
+              font-size: 30rpx;
+              color: #aaa
+          }
+          .price{
+              text-align: center;
+              .number{
+                  font-weight:900;
+                  font-size: 60rpx;
+              }
+              .per{
+                  font-size: 60rpx;
+                  color: #aaa
+              }
+              .unit{
+                  vertical-align: top;
+                  color: #aaa
+              }
+          }
+          .button{
+            position: absolute;
+            bottom: -35rpx;
+            left:50rpx;
+            display:flex;
+            button{
+               margin:0;
+               padding:15rpx 70rpx;
+            }
+            button+button{
+                margin-left: 20rpx;
+            }
+          }
+          
+      }
+      .composition{
+          margin-top: 60rpx;
+          padding: 20rpx 100rpx;
+          .title{
+              font-weight: 700;
+              margin-bottom: 20rpx;
+          }
+          .item{
+              font-weight: 700;
+              font-size: 30rpx;
+              color: #3B3A39;
+
+          }
+          .item::before{
+              content:' ';
+              display: inline-block;
+              width: 10rpx;
+              height:10rpx;
+              border-radius: 50%;
+              background-color: #FF983D;
+              vertical-align: middle;
+            //   margin-top: -10rpx;
+              margin-right: 20rpx;
+          }
+      }
+      .top_back{
+          position: absolute;
+          background-color: #FF983D;
+          height: 300rpx;
+          width:100%;
+          z-index: -1;
+      }
+  }
+  
+</style>
+<template>
+  <view class="container">
+      <view class="wrapper">
+        <view class="top_back"></view>
+        <view class="product">
+            <view class="title">Carpaccio</view>
+            <view class="rating">
+                <text class="iconfont">&#xe637;</text>
+                <text class="iconfont">&#xe637;</text>
+                <text class="iconfont">&#xe637;</text>
+                <text class="iconfont">&#xe637;</text>
+                <text class="iconfont">&#xe637;</text>
+            </view>
+            <view class="content">
+                name:{{content.name}}, surname:{{content.surname}}, number:{{content.number}}, location:{{content.location}}, email:{{content.email}}
+            </view>
+            <view class="price"><text class="number">€170</text><text class="per">/</text><text class="unit">40grams</text></view>
+            <view class="button">
+                <button class="btn_main">BUY</button>
+            <button class="btn_main">IN GARGAgE</button>
+            </view>
+            
+        </view>
+        <view class="composition">
+            <view class="title">Composition</view>
+            <repeat for="{{compositionList}}" key="index" index="index" item="item">
+                <view class="item">{{item}}</view>
+            </repeat>
+        </view>
+      </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+export default class Product extends wepy.page {
+  config = {
+    navigationBarTitleText: 'Product'
+  };
+  data={
+      content:{},
+      compositionList:[
+          'Veal(tenderloin)',
+          'Arugula',
+          'Cherry tomatoes',
+          'Baisamic vinegar',
+          'Olive oil',
+          'Pepper Mix',
+          'salt'
+      ]
+  }
+  onLoad(params,data) {
+    if(data.preload){
+        this.content=data.preload.obj
+    }
+  }
+}
+</script>
